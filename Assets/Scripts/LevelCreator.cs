@@ -30,5 +30,6 @@ public class LevelCreator : MonoBehaviour
 
             Instantiate(_towerTemplate, spawnPoint, Quaternion.identity);
         }
+
     }
 }

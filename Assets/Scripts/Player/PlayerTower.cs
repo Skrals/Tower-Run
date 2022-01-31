@@ -19,9 +19,10 @@ public class PlayerTower : MonoBehaviour
 
         _humans.Add(Instantiate(_startHuman, spawnPoint, Quaternion.identity, transform));
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.TryGetComponent(out Human human))
+        if (collision.gameObject.TryGetComponent(out Human human))
         {
             Tower collisionTower = human.GetComponentInParent<Tower>();
 
@@ -32,6 +33,11 @@ public class PlayerTower : MonoBehaviour
                 for (int i = collectedHumans.Count - 1; i >= 0; i--)
                 {
                     Human insertHuman = collectedHumans[i];
+                    var humanRigitbody = insertHuman.GetComponent<Rigidbody>();
+                    humanRigitbody.isKinematic = true;
+                    humanRigitbody.freezeRotation = true;
+                    humanRigitbody.angularVelocity = new Vector3(0, 0, 0);
+                    insertHuman.GetComponent<BoxCollider>().enabled = false;
                     InsertHuman(insertHuman);
                     DisplaceChecker(insertHuman);
                 }
@@ -53,12 +59,12 @@ public class PlayerTower : MonoBehaviour
         human.transform.localRotation = Quaternion.identity;
     }
 
-    private void DisplaceChecker ( Human human)
+    private void DisplaceChecker(Human human)
     {
-        float displaceScale = 1.3f;
+        float displaceScale = 1.7f;
         Vector3 distanceCheckerNewPosition = _distanceChecker.position;
         distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale;
         _distanceChecker.position = distanceCheckerNewPosition;
-        _checkCollider.center = _distanceChecker.localPosition;
+        _checkCollider.center -= new Vector3(0, displaceScale,0) ;
     }
 }

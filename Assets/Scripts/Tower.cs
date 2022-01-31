@@ -32,13 +32,13 @@ public class Tower : MonoBehaviour
         }
     }
 
-    public List<Human> CollectHuman (Transform distanceChecker,float fixationMaxDistance)
+    public List<Human> CollectHuman(Transform distanceChecker, float fixationMaxDistance)
     {
         for (int i = 0; i < _humanInTower.Count; i++)
         {
             float distanceBetweenPoints = CheckDistanceY(distanceChecker, _humanInTower[i].FixationPoint.transform);
 
-            if(distanceBetweenPoints < fixationMaxDistance)
+            if (distanceBetweenPoints < fixationMaxDistance)
             {
                 List<Human> collectedHumans = _humanInTower.GetRange(0, i + 1);
                 _humanInTower.RemoveRange(0, i + 1);
@@ -50,7 +50,7 @@ public class Tower : MonoBehaviour
 
     private float CheckDistanceY(Transform distanceChecker, Transform humanFixationPoint)
     {
-        Vector3 distanceCheckerY = new Vector3(0,distanceChecker.position.y, 0);
+        Vector3 distanceCheckerY = new Vector3(0, distanceChecker.position.y, 0);
         Vector3 humanFixationPointY = new Vector3(0, humanFixationPoint.position.y, 0);
 
         return Vector3.Distance(distanceCheckerY, humanFixationPointY);
@@ -58,6 +58,14 @@ public class Tower : MonoBehaviour
 
     public void Break()
     {
-        Destroy(gameObject);
+        foreach (var human in _humanInTower)
+        {
+            human.transform.parent = null;
+            var humanRigitbody = human.GetComponent<Rigidbody>();
+            humanRigitbody.isKinematic = false;
+            humanRigitbody.useGravity = true;
+            humanRigitbody.AddExplosionForce(30, new Vector3(Random.Range(-5,5), Random.Range(-5, 5), Random.Range(-5, 5)), 0,10,ForceMode.Impulse);
+            human.DestroyHumanObj();
+        }
     }
 }
