@@ -61,7 +61,7 @@ public class PlayerTower : MonoBehaviour
 
     private void DisplaceChecker(Human human)
     {
-        float displaceScale = 1.7f;
+        float displaceScale = 1.5f;
         Vector3 distanceCheckerNewPosition = _distanceChecker.position;
         distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale;
         _distanceChecker.position = distanceCheckerNewPosition;

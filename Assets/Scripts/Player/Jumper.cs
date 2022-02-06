@@ -5,14 +5,17 @@ using UnityEngine;
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _jumpForce;
+    [SerializeField] private float _jumpForceModifire;
 
     [SerializeField] private bool _isGrounded;
 
     private Rigidbody _rigidbody;
+    private float _jumpForceTMP;
+    
 
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>(); 
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -30,5 +33,19 @@ public class Jumper : MonoBehaviour
         {
             _isGrounded = true;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.TryGetComponent(out JumpAmplifier jumpAmplifier))
+        {
+            _jumpForceTMP = _jumpForce;
+            _jumpForce = _jumpForce + _jumpForceModifire * jumpAmplifier.GetJumpModifire();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _jumpForce = _jumpForceTMP;
     }
 }

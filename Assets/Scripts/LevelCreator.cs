@@ -7,6 +7,7 @@ public class LevelCreator : MonoBehaviour
 {
     [SerializeField] private PathCreator _pathCreator;
     [SerializeField] private Tower _towerTemplate;
+    [SerializeField] private JumpAmplifier _jumpAmplifier;
     [SerializeField] private int _humanTowerCount;
 
     private void Start()
@@ -14,7 +15,7 @@ public class LevelCreator : MonoBehaviour
         GenerateLevel();
     }
 
-    private void GenerateLevel ()
+    private void GenerateLevel()
     {
         float roadLength = _pathCreator.path.length;
         float distanceBetweeenTower = roadLength / _humanTowerCount;
@@ -27,8 +28,13 @@ public class LevelCreator : MonoBehaviour
         {
             distanceTrabelled += distanceBetweeenTower;
             spawnPoint = _pathCreator.path.GetPointAtDistance(distanceTrabelled, EndOfPathInstruction.Stop);
+            var apmlifierSpawnPoint = _pathCreator.path.GetPointAtDistance(distanceTrabelled - 2f, EndOfPathInstruction.Stop);
 
-            Instantiate(_towerTemplate, spawnPoint, Quaternion.identity);
+            var amplifire = Instantiate(_jumpAmplifier, apmlifierSpawnPoint, Quaternion.FromToRotation(apmlifierSpawnPoint, spawnPoint));
+
+            var tower = Instantiate(_towerTemplate, spawnPoint, Quaternion.identity);
+
+            amplifire.SetJumpModifire(tower.HumansCount());
         }
 
     }

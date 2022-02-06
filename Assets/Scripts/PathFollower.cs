@@ -19,7 +19,7 @@ public class PathFollower : MonoBehaviour
         _rigitbody.MovePosition(_pathCreator.path.GetPointAtDistance(_distanceTravelled));
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _distanceTravelled += Time.deltaTime * _speed;
 
@@ -29,5 +29,6 @@ public class PathFollower : MonoBehaviour
         transform.LookAt(nextPoint);
 
         _rigitbody.MovePosition(nextPoint);
+
     }
 }

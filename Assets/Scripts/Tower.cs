@@ -7,9 +7,9 @@ public class Tower : MonoBehaviour
     [SerializeField] private Human[] _human;
     [SerializeField] private Vector2Int _humanInTowerRange;
 
-    private List<Human> _humanInTower;
+    [SerializeField] private List<Human> _humanInTower;
 
-    private void Start()
+    private void Awake()
     {
         _humanInTower = new List<Human>();
         int humanInTowerCount = Random.Range(_humanInTowerRange.x, _humanInTowerRange.y);
@@ -24,7 +24,7 @@ public class Tower : MonoBehaviour
         {
             Human spawnedHuman = _human[Random.Range(0, _human.Length)];
 
-            _humanInTower.Add(Instantiate(spawnedHuman, spawnPoint, Quaternion.identity, transform));
+            _humanInTower.Add(Instantiate(spawnedHuman, spawnPoint, Quaternion.Euler(transform.rotation.eulerAngles), transform));
 
             _humanInTower[i].transform.localPosition = new Vector3(0, _humanInTower[i].transform.localPosition.y, 0);
 
@@ -64,8 +64,14 @@ public class Tower : MonoBehaviour
             var humanRigitbody = human.GetComponent<Rigidbody>();
             humanRigitbody.isKinematic = false;
             humanRigitbody.useGravity = true;
-            humanRigitbody.AddExplosionForce(30, new Vector3(Random.Range(-5,5), Random.Range(-5, 5), Random.Range(-5, 5)), 0,10,ForceMode.Impulse);
+            humanRigitbody.AddExplosionForce(4, new Vector3(Random.Range(-5,5), Random.Range(-5, 5), Random.Range(-5, 5)), 0,1,ForceMode.Impulse);
             human.DestroyHumanObj();
         }
     }
+
+    public int HumansCount()
+    {
+        return _humanInTower.Count;
+    }
+
 }
