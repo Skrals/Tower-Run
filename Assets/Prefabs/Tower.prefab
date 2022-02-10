@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _human:
   - {fileID: -1880281793764068673, guid: 2b7763827083f5243bbd705d88c01275, type: 3}
-  _humanInTowerRange: {x: 1, y: 5}
-  _pathCreator: {fileID: 0}
+  _humanInTowerRange: {x: 1, y: 3}
+  _humanInTower: []

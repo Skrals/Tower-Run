@@ -1226,10 +1226,10 @@ Animator:
   m_GameObject: {fileID: 4478041282925900481}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6a02e527dc1b98d4a85549ae0c115490, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4da76d8b49772b94992041cab5e810d4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1243,7 +1243,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4478041282925900481}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.5286794, y: 1.9082813, z: 0.6611023}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerTower : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerTower : MonoBehaviour
 
     private List<Human> _humans;
 
+    public UnityAction<int> HumanAdded;
+
     private void Start()
     {
         _humans = new List<Human>();
@@ -18,6 +21,8 @@ public class PlayerTower : MonoBehaviour
         Vector3 spawnPoint = transform.position;
 
         _humans.Add(Instantiate(_startHuman, spawnPoint, Quaternion.identity, transform));
+        _humans[0].Run();
+        HumanAdded?.Invoke(_humans.Count);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -30,6 +35,7 @@ public class PlayerTower : MonoBehaviour
 
             if (collectedHumans != null)
             {
+                _humans[0].StopRun();
                 for (int i = collectedHumans.Count - 1; i >= 0; i--)
                 {
                     Human insertHuman = collectedHumans[i];
@@ -41,6 +47,8 @@ public class PlayerTower : MonoBehaviour
                     InsertHuman(insertHuman);
                     DisplaceChecker(insertHuman);
                 }
+                HumanAdded?.Invoke(_humans.Count);
+                _humans[0].Run();
             }
             collisionTower.Break();
         }
@@ -66,5 +74,14 @@ public class PlayerTower : MonoBehaviour
         distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale;
         _distanceChecker.position = distanceCheckerNewPosition;
         _checkCollider.center -= new Vector3(0, displaceScale,0) ;
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.TryGetComponent(out Finish finish))
+        {
+            _humans[0].StopRun();
+        }
     }
 }
